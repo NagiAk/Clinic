@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medecin;
+use App\Models\Patient;
+use App\Models\Rdv;
 use App\Models\Specialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +56,15 @@ class AdminController extends Controller
     }
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $patientsCount = Patient::count();
+        $rdvsCount = Rdv::count();
+        $medecinsCount = Medecin::count();
+
+        $realiserCount = RDV::where('etat_de_rdv', 'realise')->count();
+        $annulerCount = RDV::where('etat_de_rdv', 'annuler')->count();
+        $encourCount = RDV::where('etat_de_rdv', 'encour')->count();
+
+        $rdvStatus = [$realiserCount, $annulerCount, $encourCount];
+        return view('admin.dashboard', compact('patientsCount', 'rdvsCount', 'medecinsCount', 'rdvStatus'));
     }
 }
