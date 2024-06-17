@@ -14,17 +14,17 @@
     <form action="{{ route('medecin.rdvs.store') }}" method="POST">
         @csrf
         <div class="form-group">
-          <label for="patient_id">Patient</label>
-          <input type="text" class="form-control" id="patient_id" name="patient_id" autocomplete="off" list="patientsList" required>
-          <datalist id="patientsList">
-              @foreach($patients as $patient)
-                  <option value="{{ $patient->id }}">{{ $patient->nom }} {{ $patient->prenom }}</option>
-              @endforeach
-          </datalist>
-          @error('patient_id')
-              <div class="alert alert-danger">{{ $message }}</div>
-          @enderror
-      </div>
+            <label for="patient_id">Patient</label>
+            <input type="text" class="form-control" id="patient_id" name="patient_id" autocomplete="off" list="patientsList" required>
+            <datalist id="patientsList">
+                @foreach($patients as $patient)
+                    <option value="{{ $patient->id }}">{{ $patient->nom }} {{ $patient->prenom }}</option>
+                @endforeach
+            </datalist>
+            @error('patient_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
         <div class="form-group">
             <label for="datetime">Available Date and Time:</label>
             <input type="text" id="datetime" class="form-control @error('schedule_id') is-invalid @enderror" required>

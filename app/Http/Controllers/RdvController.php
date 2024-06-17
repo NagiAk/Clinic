@@ -172,4 +172,23 @@ class RdvController extends Controller
             return response()->json($patients);
         }
 
+        public function availableDatesTimes(Medecin $medecin, $date)
+        {
+            // Retrieve available schedules for the given doctor and date
+            $availableSlots = $medecin->schedules()
+                                        ->where('date', $date)
+                                        ->where('status', 'available') 
+                                        ->get(['date', 'time'])
+                                        ->map(function ($schedule) {
+                                            return [
+                                                'start' => $schedule->date . ' ' . $schedule->time,
+                                                'end' => $schedule->date . ' ' . date('H:i', strtotime($schedule->time) + 1800) // Assuming each slot is 30 minutes
+                                            ];
+                                        });
+        
+            return response()->json([
+                'availableSlots' => $availableSlots
+            ]);
+        }
+        
 }

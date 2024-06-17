@@ -65,6 +65,8 @@ Route::middleware(['web', 'auth', CheckUserRole::class .':admin'])->group(functi
     Route::resource('admin/patients', PatientController::class);
     Route::resource('admin/specialites', SpecialiteController::class);
     Route::resource('admin/rdvs', RdvController::class);
+    Route::get('/api/medecins/{medecin}/available-dates-times/{date}', [RdvController::class, 'availableDatesTimes']);
+
     Route::resource('admin/medecins', MedecinController::class);
     Route::get('admin/medecins', [MedecinController::class, 'getMedecinsBySpecialite']);
 

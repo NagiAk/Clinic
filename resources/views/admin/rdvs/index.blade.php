@@ -194,12 +194,14 @@
                     </div>
                     <div class="form-group">
                         <label for="schedule_id">Available Date and Time</label>
-                        <select name="schedule_id" id="schedule_id" class="form-control" required>
-                            <option value="">Select Date and Time</option>
-                        </select>
+                        <input type="text" id="datetime" class="form-control @error('schedule_id') is-invalid @enderror" required>
+                        <input type="hidden" name="schedule_id" id="schedule_id" required>
                         @error('schedule_id')
-                            <div class="alert alert-danger">{{ $message }}</div>
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
+                        <div id="no-schedule-found" class="" ></div>
                     </div>
                     <button type="submit" class="btn btn-success">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -282,6 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const editSpecialiteSelect = document.getElementById('edit_specialite_id');
     const editMedecinSelect = document.getElementById('edit_medecin_id');
     const editScheduleSelect = document.getElementById('edit_schedule_id');
+    const noScheduleFoundDiv = document.getElementById('no-schedule-found');
     const medecins = @json($specialites->flatMap->medecins);
 
     specialiteSelect.addEventListener('change', function () {
@@ -297,76 +300,130 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     medecinSelect.addEventListener('change', function () {
-        const medecinId = this.value;
-        fetch(`/admin/${medecinId}/schedules`)
-            .then(response => response.json())
-            .then(schedules => {
-                scheduleSelect.innerHTML = '<option value="">Select Date and Time</option>';
-                
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
+        const medecinId = 1; // Replace with the actual medecin ID
 
-                schedules.forEach(schedule => {
-                    const scheduleDate = new Date(schedule.date);
-                    if (scheduleDate >= tomorrow) {
-                        const option = document.createElement('option');
-                        option.value = schedule.id;
-                        option.textContent = `${schedule.date} at ${schedule.time}`;
-                        scheduleSelect.appendChild(option);
-                    }
-                });
-            });
-    });
+        // Function to fetch schedules and return the array of schedules
+        async function fetchSchedules(medecinId) {
+            try {
+                const response = await fetch(`/admin/${medecinId}/schedules`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch schedules');
+                }
 
-    editSpecialiteSelect.addEventListener('change', function () {
-        const specialiteId = this.value;
-        editMedecinSelect.innerHTML = '<option value="">Select Medecin</option>'; 
+                const schedules = await response.json();
+                return schedules; // Return the array of schedules
+            } catch (error) {
+                console.error('Error fetching schedules:', error);
+                return []; // Return an empty array on error
+            }
+        }
 
-        medecins.filter(med => med.specialite_id == specialiteId).forEach(med => {
-            const option = document.createElement('option');
-            option.value = med.id;
-            option.textContent = med.user.name;
-            editMedecinSelect.appendChild(option);
+        // Fetch schedules and handle the resolved result
+        fetchSchedules(medecinId).then((schedules) => {
+            console.log(schedules); // Log the resolved array of schedules
+
+            // Now you can use the 'schedules' array directly to initialize 'flatpickr'
+            if (schedules.length > 0) {
+                initializeFlatpickr(schedules); // Initialize flatpickr with fetched schedules
+            } else {
+                // Handle no schedules case here
+                console.log("No schedules found");
+            }
+        }).catch((error) => {
+            console.error('Error in Promise chain:', error);
         });
-    });
 
-    editMedecinSelect.addEventListener('change', function () {
-        const medecinId = this.value;
-        fetch(`/admin/${medecinId}/schedules`)
-            .then(response => response.json())
-            .then(schedules => {
-                editScheduleSelect.innerHTML = '<option value="">Select Date and Time</option>';
-                schedules.forEach(schedule => {
-                    const option = document.createElement('option');
-                    option.value = schedule.id;
-                    option.textContent = `${schedule.date} at ${schedule.time}`;
-                    editScheduleSelect.appendChild(option);
-                });
+        /**
+         * Function to initialize flatpickr with fetched schedules
+         * @param {Array} schedules - Array of fetched schedules
+         */
+        function initializeFlatpickr(schedules) {
+
+            flatpickr('#datetime', {
+                enableTime: true,
+                dateFormat: 'Y-m-d H:i',
+                minuteIncrement: 30,
+                onChange: function(selectedDates, dateStr, instance) {
+                    handleScheduleSelection(schedules, dateStr);
+                }
             });
+        }
+
+        /**
+         * Function to handle schedule selection logic
+         * @param {Array} schedules - Array of fetched schedules
+         * @param {string} dateStr - Selected date string
+         */
+        function handleScheduleSelection(schedules, dateStr) {
+            const selectedSchedule = schedules.find(schedule => {
+                const scheduleDateTime = `${schedule.date} ${schedule.time}`;
+                const formattedDateTime = `${schedule.date} ${schedule.time.substr(0, 5)}`;
+                return formattedDateTime === dateStr;
+            });
+            console.log(selectedSchedule);
+            if (selectedSchedule) {
+                document.getElementById('schedule_id').value = selectedSchedule.id;
+                noScheduleFoundDiv.innerHTML = 'Date and Time are valid.';
+                noScheduleFoundDiv.className = 'alert alert-success mt-2';
+            } else {
+                document.getElementById('schedule_id').value = '';
+                noScheduleFoundDiv.className = 'alert alert-warning mt-2';
+                noScheduleFoundDiv.innerHTML = 'Date And Time are unvalid.';
+            }
+        }
+
+            
     });
 
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const appointment = JSON.parse(this.getAttribute('data-appointment'));
-            const form = document.getElementById('editRdvForm');
-            form.action = `/rdvs/${appointment.id}`;
+    // editSpecialiteSelect.addEventListener('change', function () {
+    //     const specialiteId = this.value;
+    //     editMedecinSelect.innerHTML = '<option value="">Select Medecin</option>'; 
 
-            document.getElementById('edit_patient_id').value = appointment.patient_id;
-            document.getElementById('edit_specialite_id').value = appointment.medecin.specialite_id;
-            document.getElementById('edit_medecin_id').value = appointment.medecin_id;
+    //     medecins.filter(med => med.specialite_id == specialiteId).forEach(med => {
+    //         const option = document.createElement('option');
+    //         option.value = med.id;
+    //         option.textContent = med.user.name;
+    //         editMedecinSelect.appendChild(option);
+    //     });
+    // });
 
-            // Trigger change events to populate medecin and schedule select elements
-            editSpecialiteSelect.dispatchEvent(new Event('change'));
-            setTimeout(() => {
-                editMedecinSelect.dispatchEvent(new Event('change'));
-                setTimeout(() => {
-                    document.getElementById('edit_schedule_id').value = appointment.schedule_id;
-                }, 300);
-            }, 300);
+    // editMedecinSelect.addEventListener('change', function () {
+    //     const medecinId = this.value;
+    //     fetch(`/admin/${medecinId}/schedules`)
+    //         .then(response => response.json())
+    //         .then(schedules => {
+    //             editScheduleSelect.innerHTML = '<option value="">Select Date and Time</option>';
+    //             schedules.forEach(schedule => {
+    //                 const option = document.createElement('option');
+    //                 option.value = schedule.id;
+    //                 option.textContent = `${schedule.date} at ${schedule.time}`;
+    //                 editScheduleSelect.appendChild(option);
+    //             });
+    //         });
+    // });
 
-            $('#editRdvModal').modal('show');
-        });
-    });
+    // document.querySelectorAll('.edit-btn').forEach(button => {
+    //     button.addEventListener('click', function () {
+    //         const appointment = JSON.parse(this.getAttribute('data-appointment'));
+    //         const form = document.getElementById('editRdvForm');
+    //         form.action = `/rdvs/${appointment.id}`;
+
+    //         document.getElementById('edit_patient_id').value = appointment.patient_id;
+    //         document.getElementById('edit_specialite_id').value = appointment.medecin.specialite_id;
+    //         document.getElementById('edit_medecin_id').value = appointment.medecin_id;
+
+    //         // Trigger change events to populate medecin and schedule select elements
+    //         editSpecialiteSelect.dispatchEvent(new Event('change'));
+    //         setTimeout(() => {
+    //             editMedecinSelect.dispatchEvent(new Event('change'));
+    //             setTimeout(() => {
+    //                 document.getElementById('edit_schedule_id').value = appointment.schedule_id;
+    //             }, 300);
+    //         }, 300);
+
+    //         $('#editRdvModal').modal('show');
+    //     });
+    // });
 });
 </script>
 @endsection
