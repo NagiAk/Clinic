@@ -6,6 +6,9 @@
         background-color: rgb(238, 180, 180);
         color: rgb(84, 83, 172);
     }
+    .hidden {
+        display: none;
+    }
 </style>
 <div class="container mt-5">
     <h2>Edit Appointment</h2>
@@ -19,7 +22,7 @@
         @method('PUT')
         <div class="form-group">
             <label for="patient_id">Patient</label>
-            <input type="text" class="form-control" style="background-color: rgb(238, 180, 180);" id="patient_np" name="patient_np" value="{{ $rdv->patient->nom }} {{ $rdv->patient->prenom }}" required readonly>
+            <input type="text" class="form-control" id="patient_np" name="patient_np" value="{{ $rdv->patient->nom }} {{ $rdv->patient->prenom }}" required readonly>
             <input type="hidden" class="form-control" name="patient_id" value="{{ $rdv->patient->id }}">
             @error('patient_id')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -42,13 +45,8 @@
         <div class="form-group">
             <label for="medecin_id">Medecin</label>
             <select class="form-control" id="medecin_id" name="medecin_id" required>
-                @foreach($specialites as $specialite)
-                    <optgroup label="{{ $specialite->nom }}">
-                        @foreach($specialite->medecins as $medecin)
-                            <option value="{{ $medecin->id }}" {{ $medecin->id == $rdv->medecin_id ? 'selected' : '' }}>{{ $medecin->user->name }}</option>
-                        @endforeach
-                    </optgroup>
-                @endforeach
+                <option value="">Select Medecin</option>
+                <!-- Medecins will be populated via AJAX -->
             </select>
             @error('medecin_id')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -56,14 +54,10 @@
         </div>
 
         <div class="form-group">
-            <label for="schedule_id">Available Date and Time:</label>
-            <select name="schedule_id" id="schedule_id" class="form-control @error('schedule_id') is-invalid @enderror" required>
-                @foreach($schedules as $schedule)
-                    <option value="{{ $schedule->id }}" {{ $rdv->schedule_id == $schedule->id ? 'selected' : '' }}>
-                        {{ \Carbon\Carbon::parse($schedule->date)->format('l, F j, Y') }} at {{ \Carbon\Carbon::parse($schedule->time)->format('h:i A') }}
-                    </option>
-                @endforeach
-            </select>
+            <label for="datetime">Available Date and Time:</label>
+            <input type="text" id="datetime" class="form-control" required>
+            <input type="hidden" id="schedule_id" name="schedule_id">
+            <div id="no-schedule-found" class=""></div>
             @error('schedule_id')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -74,4 +68,108 @@
         <a href="{{ route('rdvs.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const specialiteSelect = document.getElementById('specialite_id');
+        const medecinSelect = document.getElementById('medecin_id');
+        const scheduleSelect = document.getElementById('schedule_id');
+        const editSpecialiteSelect = document.getElementById('edit_specialite_id');
+        const editMedecinSelect = document.getElementById('edit_medecin_id');
+        const editScheduleSelect = document.getElementById('edit_schedule_id');
+        const noScheduleFoundDiv = document.getElementById('no-schedule-found');
+        const medecins = @json($specialites->flatMap->medecins);
+    
+        specialiteSelect.addEventListener('change', function () {
+            const specialiteId = this.value;
+            medecinSelect.innerHTML = '<option value="">Select Medecin</option>'; 
+    
+            medecins.filter(med => med.specialite_id == specialiteId).forEach(med => {
+                const option = document.createElement('option');
+                option.value = med.id;
+                option.textContent = med.user.name;
+                medecinSelect.appendChild(option);
+            });
+        });
+    
+        medecinSelect.addEventListener('change', function () {
+            const medecinId = 1; // Replace with the actual medecin ID
+    
+            // Function to fetch schedules and return the array of schedules
+            async function fetchSchedules(medecinId) {
+                try {
+                    const response = await fetch(`/admin/${medecinId}/schedules`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch schedules');
+                    }
+    
+                    const schedules = await response.json();
+                    return schedules; // Return the array of schedules
+                } catch (error) {
+                    console.error('Error fetching schedules:', error);
+                    return []; // Return an empty array on error
+                }
+            }
+    
+            // Fetch schedules and handle the resolved result
+            fetchSchedules(medecinId).then((schedules) => {
+                console.log(schedules); // Log the resolved array of schedules
+    
+                // Now you can use the 'schedules' array directly to initialize 'flatpickr'
+                if (schedules.length > 0) {
+                    initializeFlatpickr(schedules); // Initialize flatpickr with fetched schedules
+                } else {
+                    // Handle no schedules case here
+                    console.log("No schedules found");
+                }
+            }).catch((error) => {
+                console.error('Error in Promise chain:', error);
+            });
+    
+            /**
+             * Function to initialize flatpickr with fetched schedules
+             * @param {Array} schedules - Array of fetched schedules
+             */
+            function initializeFlatpickr(schedules) {
+    
+                flatpickr('#datetime', {
+                    enableTime: true,
+                    dateFormat: 'Y-m-d H:i',
+                    minuteIncrement: 30,
+                    onChange: function(selectedDates, dateStr, instance) {
+                        handleScheduleSelection(schedules, dateStr);
+                    }
+                });
+            }
+    
+            /**
+             * Function to handle schedule selection logic
+             * @param {Array} schedules - Array of fetched schedules
+             * @param {string} dateStr - Selected date str
+             */
+            function handleScheduleSelection(schedules, dateStr) {
+                const selectedSchedule = schedules.find(schedule => {
+                    const scheduleDateTime = `${schedule.date} ${schedule.time}`;
+                    const formattedDateTime = `${schedule.date} ${schedule.time.substr(0, 5)}`;
+                    return formattedDateTime === dateStr;
+                });
+                console.log(selectedSchedule);
+                if (selectedSchedule) {
+                    document.getElementById('schedule_id').value = selectedSchedule.id;
+                    noScheduleFoundDiv.innerHTML = 'Date and Time are valid.';
+                    noScheduleFoundDiv.className = 'alert alert-success mt-2';
+                } else {
+                    document.getElementById('schedule_id').value = '';
+                    noScheduleFoundDiv.className = 'alert alert-warning mt-2';
+                    noScheduleFoundDiv.innerHTML = 'Date And Time are unvalid.';
+                }
+            }
+    
+                
+        });
+    
+    });
+    </script>
 @endsection

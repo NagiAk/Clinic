@@ -98,21 +98,15 @@ class RdvController extends Controller
         return view('admin.rdvs.show', compact('rdv'));
     }
 
-    public function edit( $id)  
+    public function edit($id)
     {
         $specialites = Specialite::with('medecins.user')->get();
         $rdv = Rdv::find($id);
-        $patient = Patient::find($rdv->patient_id);
-        $medecin = Medecin::find($rdv->medecin_id);
-        $schedules = Schedule::where('medecin_id', $medecin->id)
-                            ->where('status', 'available')
-                            ->orderBy('date')
-                            ->orderBy('time')
-                            ->get();
         if (!$rdv) {
             return redirect()->route('rdvs.index')->with('error', 'Rdv not found.');
         }
-        return view('admin.rdvs.edit', compact('rdv','patient','specialites','schedules'));
+        $patient = Patient::find($rdv->patient_id);
+        return view('admin.rdvs.edit', compact('rdv', 'patient', 'specialites'));
     }
 
     public function update(Request $request, $id)
@@ -189,6 +183,21 @@ class RdvController extends Controller
             return response()->json([
                 'availableSlots' => $availableSlots
             ]);
+        }
+        public function getMedecinsBySpeciality($specialityId)
+        {
+            $medecins = Medecin::where('specialite_id', $specialityId)->with('user')->get();
+            return response()->json($medecins);
+        }
+
+        public function getSchedulesByMedecin($medecinId)
+        {
+            $schedules = Schedule::where('medecin_id', $medecinId)
+                                ->where('status', 'available')
+                                ->orderBy('date')
+                                ->orderBy('time')
+                                ->get();
+            return response()->json($schedules);
         }
         
 }
