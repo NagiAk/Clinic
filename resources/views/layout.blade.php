@@ -8,6 +8,24 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <style>
+        .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out, transform 0.9s ease-out;
+        }
+    
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero, .services, .doctors{
+            background-color: rgba(153, 224, 197, 0.336);
+            color: black;
+        }
+        .inf{
+            background: linear-gradient(110deg, #8bbbbb70 50%, #edf8ef 50%);
+    
+        }
         body {
             margin: 0;
             min-height: 100vh;
