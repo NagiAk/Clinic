@@ -28,7 +28,20 @@
     <div class="row">
         @foreach($schedules as $schedule)
             <div class="col-md-4 mb-3">
-                <div class="card d">
+                <div class="card d" style="
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+">
                     <div class="card-header bg-info text-white">
                         <h5 class="card-title">{{ \Carbon\Carbon::parse($schedule->date)->format('l, F j, Y') }}</h5>
                     </div>
