@@ -88,6 +88,7 @@
                                 <button type="submit" class="btn btn-outline-success btn-sm">Realize</button>
                             </form>
                             <a href="{{ route('rdvs.edit', $rdv->id ) }}" class="btn btn-outline-primary">Edit</a>
+                            
                         @endif
                     </td>
                 </tr>

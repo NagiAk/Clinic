@@ -76,6 +76,7 @@
                                             @csrf
                                             <button type="submit" class="btn btn-outline-primary btn-sm">Edit</button>
                                         </form>
+                                        <a href="{{ route('medecin.rdvs.downloadPdf', $rdv->id) }}" class="btn btn-outline-info btn-sm mr-1 mb-1">Download PDF</a>
                                     </div>
                                 @endif
                             </td>

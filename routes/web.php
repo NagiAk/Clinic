@@ -106,6 +106,8 @@ Route::middleware(['web', 'auth', CheckUserRole::class .':medecin'])->group(func
     Route::delete('medecin/rdvs/{rdv}', [MedecinRdvsController::class, 'destroy'])->name('medecin.rdvs.destroy');
     Route::get('medecin/search-patients', [MedecinRdvsController::class, 'searchPatients'])->name('medecin.search-patients');
     Route::post('medecin/rdvs/{id}', [MedecinRdvsController::class, 'updateEtat'])->name('medecin.rdvs.updateEtat');
+    Route::get('medecin/rdvs/{id}/download-pdf', [MedecinRdvsController::class, 'downloadRdvPdf'])->name('medecin.rdvs.downloadPdf');
+
 
     // Route::resource('medecin/patients', MedecinPatientController::class);
     Route::get('medecin/patients', [MedecinPatientController::class, 'index'])->name('medecin.patients.index');
@@ -125,6 +127,7 @@ Route::middleware(['web', 'auth', CheckUserRole::class .':medecin'])->group(func
     Route::put('medecin/profile/update-password', [MedecinProfileController::class, 'updatePassword'])->name('medecin.Pwupdate');
 
     Route::get('medecin/schedule', [MedecinScheduleController::class, 'index'])->name('medecin.schedule.index');
+
 });
 
 

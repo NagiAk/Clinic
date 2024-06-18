@@ -7,6 +7,7 @@ use App\Models\Rdv;
 use App\Models\Patient;
 use App\Models\Schedule;
 use App\Models\Specialite;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -152,5 +153,32 @@ class MedecinRdvsController extends Controller
                                 ->get(['id', 'nom', 'prenom']);
             return response()->json($patients);
         }
+
+        public function downloadRdvPdf($id)
+    {
+        $rdv = Rdv::find($id);
+
+        if (!$rdv) {
+            return redirect()->route('medecin.rdvs.index')->with('error', 'Appointment not found.');
+        }
+
+        $logoPath = public_path('logo2.jpg');
+        // $logoData = base64_encode(file_get_contents($logoPath));
+        // $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
+        // $logoBase64 = 'data:image/' . $logoType . ';base64,' . $logoData;
+
+        $data = [
+            'rdv' => $rdv,
+            'clinic_name' => 'Clinic Fes',
+            'clinic_address' => 'OUED FES, Fes, Morocco',
+            'clinic_logo' => $logoPath,
+            'clinic_phone' => '(+212) 615485601',
+            'clinic_email' => 'stagechu1@gmail.com',
+            'clinic_website' => 'https://clinic-production-c91d.up.railway.app',
+        ];
+
+        $pdf = Pdf::loadView('pdf.rdv', $data);
+        return $pdf->download('rdv_'.$rdv->id.'.pdf');
+    }
 
 }
