@@ -178,7 +178,7 @@ class MedecinRdvsController extends Controller
         ];
 
         $pdf = Pdf::loadView('pdf.rdv', $data);
-        return $pdf->download('rdv_'.$rdv->id.'.pdf');
+        return $pdf->download('rdv_'.$rdv->patient->nom.'-'.$rdv->patient->prenom.'.pdf');
     }
 
 }
