@@ -12,6 +12,12 @@
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <style>
+        .pr{
+        background: linear-gradient(135deg, #b3e7b6 60%, #01284b 40%);
+        }
+        .d{
+            background: linear-gradient(135deg, #01284b 50%, #b3e7b6 50%);
+        }
         body {
             margin: 0;
             min-height: 100vh;
