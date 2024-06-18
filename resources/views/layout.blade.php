@@ -148,7 +148,7 @@
         @yield('content')
     </main>
     
-    <div class="footer">
+    <div class="footer" style="width: auto;">
         <p>Projet Clinic © 2024</p>
         <nav class="">
             <a href="{{route('about.index')}}" class="text-white navbar-brand">About us</a>
