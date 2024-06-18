@@ -23,13 +23,12 @@
     }
 
 </style>
-<div class="hero fade-in" style="
+<div class="hero fade-in visible" style="
     padding-top: 60px;
     padding-bottom: 60px;
     margin-bottom: 0px;
-    width: 934px;
-    text-align: center;
-">
+    width: auto;
+    text-align:center;">
     <h1 style="
     margin-top: 20px;
     margin-bottom: 20px;
@@ -38,22 +37,22 @@
     <img src="doc.jpg" alt="Meet Our Doctors" style="width: 300px; height: 200px;">
 </div>
 
-<div class="container services fade-in" style="
+<div class="container services fade-in visible" style="
     padding-right: 0px;
     padding-left: 0px;
     padding-top: 40px;
     padding-bottom: 40px;
-    width: 934px;
+    width: auto;
     margin-right: 0px;
 ">
     <h2 class="section-title" style="
     margin-bottom: 20px;
     height: 48px;
-    width: 934px;
+    width: auto;
     text-align: center;
 ">Why choose Circle Clinic?</h2>
     <div class="row" style="
-    width: 964px;
+    width: auto;
 ">
         <div class="col-md-5 card inf" style="
     margin-top: 20px;
@@ -130,12 +129,12 @@
     </div>
 </div>
 
-<div class="container doctors fade-in" style="
+<div class="container doctors fade-in visible" style="
     padding-top: 40px;
     padding-bottom: 40px;
     padding-right: 0px;
     padding-left: 0px;
-    width: 934px;
+    width: auto;
     margin-right: 0px;
 ">
     <div class="container mt-5" style="
@@ -143,7 +142,7 @@
     padding-left: 20px;
     padding-bottom: 20px;
     padding-right: 20px;
-    width: 934px;
+    width: auto;
 ">
         <div class="row">
             <div class="col-md-4">
