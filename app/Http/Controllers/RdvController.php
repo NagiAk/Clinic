@@ -23,7 +23,9 @@ class RdvController extends Controller
         $query = RDV::query();
     
         if ($dateFilter) {
-            $query->whereDate('date', $dateFilter);
+            $query->whereHas('schedule', function ($q) use ($dateFilter) {
+                $q->whereDate('date', $dateFilter);
+            });
         }
     
         if ($statusFilter) {
