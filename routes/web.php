@@ -19,7 +19,11 @@ use App\Http\Controllers\RdvController;
 use App\Http\Controllers\ValidationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
+use Illuminate\Support\Facades\URL;
 
+if (app()->environment('production')) {
+    URL::forceScheme('https');
+}
 
 // Route::get('/', function () {
 //     return view('welcome');
