@@ -10,9 +10,11 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             margin: 0;
             font-family: Arial, sans-serif;
             height: 100vh;
+            overflow-x: hidden;
         }
         .sidebar {
             width: 250px;
@@ -21,6 +23,8 @@
             padding-top: 20px;
             position: fixed;
             overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(0);
         }
         .sidebar a {
             color: #fff;
@@ -48,12 +52,17 @@
             margin-left: 250px;
             display: flex;
             flex-direction: column;
+            transition: margin-left 0.3s ease-in-out;
         }
         .navbar {
             height: 130px;
             background: linear-gradient(155deg, #93b8db 30%, #beafae9c 70%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            transition: padding 0.3s ease-in-out;
         }
-        
         .prof {
             color: #4e28b6;
             padding: 10px;
@@ -66,7 +75,6 @@
             background-color: #3d50da;
             border: none;
         }
-        
         .na {
             color: #050c49;
             padding: 10px;
@@ -89,47 +97,83 @@
         .dropdown-menu {
             background-color: rgb(68, 107, 226);
         }
-
         .dropdown-item {
             color: #092ed1;
         }
-
         .dropdown-item:hover {
             background-color: #08295e88;
             color: #092ed1;
         }
-        
-
+        .toggle-sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 500;
+        }
         @media (max-width: 768px) {
             .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
+                transform: translateX(-100%);
+                z-index: 1000;
             }
-            .sidebar a {
-                float: left;
-                padding: 10px;
-                text-align: center;
-                width: 100%;
+            .sidebar.open {
+                transform: translateX(0);
             }
             .main-content {
                 margin-left: 0;
             }
             .navbar {
                 flex-direction: column;
+                height: auto;
+                padding: 10px;
             }
-            .navbar .nav-link, .navbar .dropdown-toggle {
-                width: 100%;
-                text-align: center;
+            .navbar h1 {
+                margin-bottom: 10px;
             }
-            .dropdown-menu {
-                width: 100%;
-                text-align: center;
+            .toggle-sidebar-btn {
+                display: block;
+            }
+            .overlay.show {
+                display: block;
+            }
+        }
+        @media (max-width: 480px) {
+            .sidebar {
+                padding-top: 120px;
+            }
+            .sidebar a {
+                font-size: 16px;
+                padding: 10px;
+            }
+            .navbar h1 {
+                font-size: 24px;
+            }
+            .prof, .na {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
+    <button class="toggle-sidebar-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="overlay"></div>
     @auth
     <div class="sidebar">
         @if(Auth::user()->role === 'admin')
@@ -180,6 +224,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleSidebarBtn = document.querySelector('.toggle-sidebar-btn');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
 
+            toggleSidebarBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('show');
+            });
+
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            });
+        });
+    </script>
 </body>
 </html>
