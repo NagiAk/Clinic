@@ -9,23 +9,25 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <style>
         .fade-in {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.8s ease-out, transform 0.9s ease-out;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.9s ease-out;
         }
-    
+
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .hero, .services, .doctors{
+
+        .hero, .services, .doctors {
             background-color: rgba(153, 224, 197, 0.336);
             color: black;
         }
-        .inf{
+
+        .inf {
             background: linear-gradient(110deg, #8bbbbb70 50%, #edf8ef 50%);
-    
         }
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -102,7 +104,9 @@
 
         .footer nav {
             display: flex;
-            justify-content: space-around;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
         }
 
         .footer a {
@@ -148,9 +152,9 @@
         @yield('content')
     </main>
     
-    <div class="footer" style="width: auto;">
+    <div class="footer">
         <p>Projet Clinic © 2024</p>
-        <nav class="">
+        <nav>
             <a href="{{route('about.index')}}" class="text-white navbar-brand">About us</a>
             <a href="{{ route('login') }}" class="text-white navbar-brand">Log in</a>
             <a href="{{route('terms.index')}}" class="text-white navbar-brand">Terms & Conditions</a>
@@ -183,6 +187,6 @@
             observer.observe(el);
         });
     });
-</script>
+    </script>
 </body>
 </html>
