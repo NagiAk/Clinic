@@ -20,7 +20,7 @@
         }
         .navbar {
             padding: 10px;
-            background: linear-gradient(155deg, #030303 0%, #222131 100%);
+            background: linear-gradient(155deg, #3a3434 0%, #222131 100%);
             opacity: 0.9;
         }
         .nav-item {
