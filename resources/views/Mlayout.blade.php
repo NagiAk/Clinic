@@ -18,16 +18,11 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        header {
+        .navbar {
             padding: 10px;
-            opacity: 0.9;
             background: linear-gradient(155deg, #030303 0%, #222131 100%);
-        }
-        /* .navbar {
-            padding: 10px;
-            background: linear-gradient(110deg, #1963a394 58.6%, #a9dfac8a 41.4%);
             opacity: 0.9;
-        } */
+        }
         .nav-item {
             font-size: 18px;
         }
@@ -43,7 +38,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .dropdown-menu {
-            background-color: rgba(101, 127, 206, 0.514);
+            background-color: rgb(68, 107, 226);
         }
         .dropdown-item {
             color: #ffffff;
@@ -53,7 +48,7 @@
             color: #092ed1;
         }
         .main-content {
-            padding-top: 30px;
+            padding-top: 20px;
             padding-bottom: 20px;
         }
         footer {
@@ -93,19 +88,22 @@
 </head>
 <body>
     <header class="navbar navbar-expand-lg navbar-light">
-        <div class="container"> 
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav mr-auto">
                     @auth
                         @if(Auth::user()->role === 'medecin')
                             <li class="nav-item">
-                                <a class="nav-link"  style="color: #a04242;" href="{{ url('medecin/patients') }}">Liste des patients</a>
+                                <a class="nav-link" style="color: #883a3a;" href="{{ url('medecin/patients') }}">Liste des patients</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"  style="color: #a04242;" href="{{ url('medecin/rdvs') }}">Liste des RDVs</a>
+                                <a class="nav-link" style="color: #883a3a;" href="{{ url('medecin/rdvs') }}">Liste des RDVs</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"  style="color: #a04242;" href="{{ url('medecin/schedule') }}">Schedule</a>
+                                <a class="nav-link" style="color: #883a3a;" href="{{ url('medecin/schedule') }}">Schedule</a>
                             </li>
                         @endif
                     @endauth
