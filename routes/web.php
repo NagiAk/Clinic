@@ -81,7 +81,7 @@ Route::middleware(['web', 'auth', CheckUserRole::class .':admin'])->group(functi
     Route::get('admin/profile/edit', [ProfileController::class,'edit'])->name('profile.edit');
     Route::put('admin/profile/update', [ProfileController::class,'update'])->name('profile.update');
     Route::get('admin/profile/password', [ProfileController::class, 'passwordForm'])->name('profile.password');
-    Route::post('admin/profile/update-password', [ProfileController::class, 'updatePassword'])->name('Pwupdate');
+    Route::put('admin/profile/update-password', [ProfileController::class, 'updatePassword'])->name('Pwupdate');
 
     // Route::get('/admin/addMededcin', [AdminController::class, 'createMed'])->name('addMed');
     // Route::post('/admin/addMededcin', [AdminController::class, 'storeMed'])->name('storeMed');
