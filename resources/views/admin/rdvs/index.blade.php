@@ -8,6 +8,11 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <form action="{{ route('rdvs.index') }}" method="GET" class="mb-3">
         @csrf
         <div class="form-row">
