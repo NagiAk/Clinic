@@ -82,6 +82,13 @@ class RdvController extends Controller
         if ($schedule->status !== 'available') {
             return redirect()->back()->with('error', 'The selected schedule is not available.');
         }
+        
+        $selectedDate = $schedule->date;
+        $today = date('Y-m-d');
+
+        if ($selectedDate < $today) {
+            return redirect()->back()->with('error', 'The selected date must be greater than today.')->withInput();
+        }
 
         Rdv::create([
             'patient_id' => $request->patient_id,
