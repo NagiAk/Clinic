@@ -9,7 +9,11 @@
 </style>
 <div class="container mt-5">
     <h2>{{ Auth::user()->name }} Appointments</h2>
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <form method="post" action="{{ route('medecin.rdvs.index') }}" class="mb-3">
         @csrf
         @method('get')
