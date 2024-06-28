@@ -62,9 +62,9 @@ class ValidationController extends Controller
                     $rdvDate = Carbon::parse($infoArray[4]);
 
                     // Check if the rdvDate is older than tomorrow
-                    // if ($rdvDate->lessThanOrEqualTo(Carbon::now()->addDay())) {
-                    //     $rdvDate = Carbon::now()->addDays(2);
-                    // }
+                    if ($rdvDate->lessThanOrEqualTo(Carbon::now()->addDay())) {
+                        $rdvDate = Carbon::now()->addDays(2);
+                    }
 
                     $schedule = null;
                     $medecin = null;
