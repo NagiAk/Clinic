@@ -59,17 +59,42 @@ class ValidationController extends Controller
                         $patient->save();
                     }
 
-                    $medecin = $specialite->medecins()->inRandomOrder()->first();
-                    
                     $rdvDate = Carbon::parse($infoArray[4]);
 
                     // Check if the rdvDate is older than tomorrow
-                    if ($rdvDate->lessThanOrEqualTo(Carbon::now()->addDay())) {
-                        $rdvDate = Carbon::now()->addDays(2);
-                    };
+                    // if ($rdvDate->lessThanOrEqualTo(Carbon::now()->addDay())) {
+                    //     $rdvDate = Carbon::now()->addDays(2);
+                    // }
 
-                    $schedule = $this->findFirstAvailableSchedule($medecin, $rdvDate);
-                    if ($schedule) {
+                    $schedule = null;
+                    $medecin = null;
+
+                    // First, check each doctor for the requested date
+                    foreach ($specialite->medecins as $doctor) {
+                        $schedule = $this->findFirstAvailableSchedule($doctor, $rdvDate);
+                        if ($schedule) {
+                            $medecin = $doctor;
+                            break;
+                        }
+                    }
+
+                    // If no schedule is found on the requested date, extend the search up to one week
+                    if (!$schedule) {
+                        $endDate = $rdvDate->copy()->addWeek();
+                        $date = $rdvDate->copy();
+
+                        while ($date <= $endDate && !$schedule) {
+                            foreach ($specialite->medecins as $doctor) {
+                                $schedule = $this->findFirstAvailableSchedule($doctor, $date);
+                                if ($schedule) {
+                                    $medecin = $doctor;
+                                    break 2; // Break both loops if a schedule is found
+                                }
+                            }
+                            $date->addDay();
+                        }
+                    }
+                    if ($schedule && $medecin) {
                         $rdv = new RDV();
                         $rdv->patient_id = $patient->id;
                         $rdv->medecin_id = $medecin->id;
@@ -91,47 +116,38 @@ class ValidationController extends Controller
                         $msgSent->body = $emailContent;
                         $msgSent->sent_date = $currentDate;
                         $msgSent->save();
+                    } else {
+                        Mail::to($sender)->send(new ErrorMail());
+
+                        $emailContent = $this->getErrorEmailContent();
+                        $msgSent = new EmailSent();
+                        $msgSent->email_id = $emailId;
+                        $msgSent->reciever = $sender;
+                        $msgSent->subject = 'Rendez-vous Error';
+                        $msgSent->body = $emailContent;
+                        $msgSent->sent_date = $currentDate;
+                        $msgSent->save();
+
+                        Email::where('id', $emailId)->update(['validated' => true]);
                     }
-                } else {
-                    Mail::to($sender)->send(new ErrorMail());
-
-                    $emailContent = $this->getErrorEmailContent();
-                    $msgSent = new EmailSent();
-                    $msgSent->email_id = $emailId;
-                    $msgSent->reciever = $sender;
-                    $msgSent->subject = 'Rendez-vous Error';
-                    $msgSent->body = $emailContent;
-                    $msgSent->sent_date = $currentDate;
-                    $msgSent->save();
-
-                    Email::where('id', $emailId)->update(['validated' => true]);
                 }
             }
         }
 
         return redirect()->route('emails.index');
     }
-    private function findFirstAvailableSchedule($medecin, $startDate)
+
+    private function findFirstAvailableSchedule($medecin, $date)
     {
-        $date = $startDate->copy();
-        $endDate = $startDate->copy()->addWeeks(2); // Check for the next 2 weeks
+        $schedules = Schedule::where('medecin_id', $medecin->id)
+            ->where('date', $date->format('Y-m-d'))
+            ->where('status', 'available')
+            ->orderBy('time')
+            ->get();
 
-        while ($date <= $endDate) {
-            $schedules = Schedule::where('medecin_id', $medecin->id)
-                ->where('date', $date->format('Y-m-d'))
-                ->where('status', 'available')
-                ->orderBy('time')
-                ->get();
-
-            if ($schedules->isNotEmpty()) {
-                return $schedules->first();
-            }
-
-            $date->addDay();
-        }
-
-        return null; // No available slot found in the given range
+        return $schedules->first();
     }
+
     private function getEmailContent($fullname, $date)
     {
         // Load the view and render it to get the HTML content
