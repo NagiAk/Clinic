@@ -8,9 +8,9 @@ use App\Models\Email;
 use App\Models\EmailSent;
 use Illuminate\Http\Request;
 use App\Models\Patient;
-use App\Models\RDV;
+use App\Models\Rdvs;
 use App\Models\Schedule;
-use App\Models\Specialite;
+use App\Models\Specialites;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
@@ -43,7 +43,7 @@ class ValidationController extends Controller
                 preg_match($phonePattern, $infoArray[7]) && 
                 $infoArray[3] > $currentDate) {
                 
-                $specialite = Specialite::where('nom', $infoArray[3])->first();
+                $specialite = Specialites::where('nom', $infoArray[3])->first();
                 if ($specialite) {
                     $nomP = explode(' ', $infoArray[2]);
 
@@ -95,7 +95,7 @@ class ValidationController extends Controller
                         }
                     }
                     if ($schedule && $medecin) {
-                        $rdv = new RDV();
+                        $rdv = new Rdvs();
                         $rdv->patient_id = $patient->id;
                         $rdv->medecin_id = $medecin->id;
                         $rdv->schedule_id = $schedule->id; 

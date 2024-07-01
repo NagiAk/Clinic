@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medecin;
-use App\Models\Specialite;
+use App\Models\Specialites;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class MedecinController extends Controller
     public function create()
     {
         
-        $specialites = Specialite::all();
+        $specialites = Specialites::all();
         return view('admin.medecins.create', compact('specialites'));
     }
 
@@ -59,7 +59,7 @@ class MedecinController extends Controller
     public function edit($id)
     {
         $medecin = Medecin::with('user')->findOrFail($id);
-        $specialites = Specialite::all();
+        $specialites = Specialites::all();
         return view('admin.medecins.edit', compact('medecin', 'specialites'));
     }
 

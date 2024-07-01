@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Medecin;
 use App\Models\Patient;
-use App\Models\Rdv;
-use App\Models\Specialite;
+use App\Models\Rdvs;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -57,12 +56,12 @@ class AdminController extends Controller
     public function dashboard()
     {
         $patientsCount = Patient::count();
-        $rdvsCount = Rdv::count();
+        $rdvsCount = Rdvs::count();
         $medecinsCount = Medecin::count();
 
-        $realiserCount = RDV::where('etat_de_rdv', 'realise')->count();
-        $annulerCount = RDV::where('etat_de_rdv', 'annuler')->count();
-        $encourCount = RDV::where('etat_de_rdv', 'encour')->count();
+        $realiserCount = Rdvs::where('etat_de_rdv', 'realise')->count();
+        $annulerCount = Rdvs::where('etat_de_rdv', 'annuler')->count();
+        $encourCount = Rdvs::where('etat_de_rdv', 'encour')->count();
 
         $rdvStatus = [$realiserCount, $annulerCount, $encourCount];
         return view('admin.dashboard', compact('patientsCount', 'rdvsCount', 'medecinsCount', 'rdvStatus'));

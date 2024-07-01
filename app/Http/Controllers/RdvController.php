@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medecin;
-use App\Models\Rdv;
 use App\Models\Patient;
+use App\Models\Rdvs;
 use App\Models\Schedule;
-use App\Models\Specialite;
+use App\Models\Specialites;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +20,7 @@ class RdvController extends Controller
         $specialiteFilter = $request->input('specialite_filter');
         $medecinFilter = $request->input('medecin_filter');
     
-        $query = RDV::query();
+        $query = Rdvs::query();
     
         if ($dateFilter) {
             $query->whereHas('schedule', function ($q) use ($dateFilter) {
@@ -44,7 +44,7 @@ class RdvController extends Controller
     
         $rdvs = $query->get();
         $patients = Patient::all();
-        $specialites = Specialite::with('medecins.user')->get();
+        $specialites = Specialites::with('medecins.user')->get();
     
         return view('admin.rdvs.index', compact('rdvs','patients','specialites'));
     }
@@ -52,7 +52,7 @@ class RdvController extends Controller
     public function create()
     {
         $patients = Patient::all();
-        $specialites = Specialite::with('medecins.user')->get();;
+        $specialites = Specialites::with('medecins.user')->get();;
         return view('admin.rdvs.create', compact('patients','specialites'));
     }
     public function getMedecinSchedules($medecinId)
@@ -89,7 +89,7 @@ class RdvController extends Controller
             return redirect()->route('rdvs.index')->with('error', 'The selected date must be greater than today.');
         }
 
-        Rdv::create([
+        Rdvs::create([
             'patient_id' => $request->patient_id,
             'medecin_id' => $schedule->medecin_id,
             'schedule_id' => $request->schedule_id,
@@ -101,15 +101,15 @@ class RdvController extends Controller
         return redirect()->route('rdvs.index')->with('success', 'Appointment scheduled successfully.');
     }
 
-    public function show(Rdv $rdv)
+    public function show(Rdvs $rdv)
     {
         return view('admin.rdvs.show', compact('rdv'));
     }
 
     public function edit($id)
     {
-        $specialites = Specialite::with('medecins.user')->get();
-        $rdv = Rdv::find($id);
+        $specialites = Specialites::with('medecins.user')->get();
+        $rdv = Rdvs::find($id);
         if (!$rdv) {
             return redirect()->route('rdvs.index')->with('error', 'Rdv not found.');
         }
@@ -119,7 +119,7 @@ class RdvController extends Controller
 
     public function update(Request $request, $id)
     {
-        $rdv = Rdv::find($id);
+        $rdv = Rdvs::find($id);
         if (!$rdv) {
             return redirect()->route('rdvs.index')->with('error', 'Appointment not found.');
         }
@@ -152,14 +152,14 @@ class RdvController extends Controller
         return redirect()->route('rdvs.index')->with('success', 'Appointment updated successfully.');
     }
 
-    public function destroy(Rdv $rdv)
+    public function destroy(Rdvs $rdv)
     {
         $rdv->delete();
         return redirect()->route('rdvs.index');
     }
     public function updateEtat(Request $request, $id)
 {
-    $rdv = Rdv::findOrFail($id);
+    $rdv = Rdvs::findOrFail($id);
     $rdv->etat_de_rdv = $request->input('etat_de_rdv');
     $rdv->save();
 

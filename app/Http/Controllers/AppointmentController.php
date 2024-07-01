@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentRequest;
-use App\Models\Specialite;
+use App\Models\Specialites;
 use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
     public function form()
     {
-        $specialites = Specialite::all();
+        $specialites = Specialites::all();
         return view('form.form',compact('specialites'));
     }
 
@@ -34,7 +34,7 @@ class AppointmentController extends Controller
             'availability.after' => "La date de rendez-vous doit être postérieure à la date d'aujourd'hui.",
         ]);
         
-        $specialite = Specialite::findOrFail($validatedData['specialite']);
+        $specialite = Specialites::findOrFail($validatedData['specialite']);
         $validatedData['specialite'] = $specialite->nom;
 
         Mail::to('stagechu1@gmail.com')->send(new AppointmentRequest($validatedData));

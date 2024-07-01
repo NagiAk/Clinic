@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rdv extends Model
+class Rdvs extends Model
 {
     use HasFactory;
     protected $fillable = ['patient_id', 'medecin_id', 'schedule_id', 'etat_de_rdv'];

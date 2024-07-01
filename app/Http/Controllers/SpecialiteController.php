@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Specialite;
+use App\Models\Specialites;
 use Illuminate\Http\Request;
 
 class SpecialiteController extends Controller
 {
     public function index()
     {
-        $specialites = Specialite::all();
+        $specialites = Specialites::all();
         return view('admin.specialites.index', compact('specialites'));
     }
 
@@ -23,7 +23,7 @@ class SpecialiteController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255|unique:specialites'
         ]);
-        $splt = new Specialite();
+        $splt = new Specialites();
         $splt->nom=$request->input('nom');
         $splt->save();
         return redirect()->route('specialites.index');
@@ -31,11 +31,11 @@ class SpecialiteController extends Controller
 
     public function show($id)
     {
-        $specialite = Specialite::findOrFail($id);
+        $specialite = Specialites::findOrFail($id);
         return view('admin.specialites.show', compact('specialite'));
     }
 
-    public function edit(Specialite $specialite)
+    public function edit(Specialites $specialite)
     {
         return view('admin.specialites.edit', compact('specialite'));
     }
@@ -45,13 +45,13 @@ class SpecialiteController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255|unique:specialites,nom,' . $id
         ]);
-        $splt = Specialite::findOrFail($id);
+        $splt = Specialites::findOrFail($id);
         $splt->nom=$request->input('nom');
         $splt->save();
         return redirect()->route('specialites.index');
     }
 
-    public function destroy(Specialite $specialite)
+    public function destroy(Specialites $specialite)
     {
         $specialite->delete();
         return redirect()->route('specialites.index');

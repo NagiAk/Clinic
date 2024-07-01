@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Rdv;
 use App\Models\Patient;
+use App\Models\Rdvs;
 use App\Models\Schedule;
-use App\Models\Specialite;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -21,7 +20,7 @@ class MedecinRdvsController extends Controller
         $dateFilter = $request->input('date_filter');
         $statusFilter = $request->input('etat_de_rdv');
 
-        $rdvs = RDV::where('medecin_id', $mdId)
+        $rdvs = Rdvs::where('medecin_id', $mdId)
                     ->with(['patient', 'schedule']);
 
         if ($dateFilter) {
@@ -67,7 +66,7 @@ class MedecinRdvsController extends Controller
             return redirect()->back()->with('error', 'The selected schedule slot is no longer available.');
         }
 
-        $rdv = new Rdv();
+        $rdv = new Rdvs();
         $rdv->patient_id = $validated['patient_id'];
         $rdv->medecin_id = $schedule->medecin_id;
         $rdv->schedule_id = $schedule->id;
@@ -80,7 +79,7 @@ class MedecinRdvsController extends Controller
         return redirect()->route('medecin.rdvs.index')->with('success', 'Appointment booked successfully.');
     }
 
-    public function show(Rdv $rdv)
+    public function show(Rdvs $rdv)
     {
         return view('medecin.rdvs.show', compact('rdv'));
     }
@@ -94,7 +93,7 @@ class MedecinRdvsController extends Controller
                             ->orderBy('date')
                             ->orderBy('time')
                             ->get();
-        $rdv = Rdv::find($id);
+        $rdv = Rdvs::find($id);
         if (!$rdv) {
             return redirect()->route('medecin.rdvs.index')->with('error', 'Rdv not found.');
         }
@@ -107,7 +106,7 @@ class MedecinRdvsController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'schedule_id' => 'required|exists:schedules,id',
         ]);
-        $rdv = RDV::findOrFail($id);
+        $rdv = Rdvs::findOrFail($id);
 
         $oldScheduleId = $rdv->schedule_id;
         $oldSchedule = Schedule::findOrFail($oldScheduleId);
@@ -132,14 +131,14 @@ class MedecinRdvsController extends Controller
         return redirect()->route('medecin.rdvs.index')->with('success', 'Appointment booked successfully.');
     }
 
-    public function destroy(Rdv $rdv)
+    public function destroy(Rdvs $rdv)
     {
         $rdv->delete();
         return redirect()->route('medecin.rdvs.index');
     }
     public function updateEtat(Request $request, $id)
     {
-        $rdv = Rdv::findOrFail($id);
+        $rdv = Rdvs::findOrFail($id);
         $rdv->etat_de_rdv = $request->input('etat_de_rdv');
         $rdv->save();
 
@@ -156,7 +155,7 @@ class MedecinRdvsController extends Controller
 
         public function downloadRdvPdf($id)
     {
-        $rdv = Rdv::find($id);
+        $rdv = Rdvs::find($id);
 
         if (!$rdv) {
             return redirect()->route('medecin.rdvs.index')->with('error', 'Appointment not found.');
