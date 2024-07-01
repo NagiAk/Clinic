@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Models\RDV;
 use App\Models\Schedule;
-use App\Models\specialite;
+use App\Models\Specialite;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
