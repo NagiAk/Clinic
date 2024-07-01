@@ -53,6 +53,10 @@
 ">Why choose Circle Clinic?</h2>
     <div class="row" style="
     width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 ">
         <div class="col-md-5 card inf" style="
     margin-top: 20px;
