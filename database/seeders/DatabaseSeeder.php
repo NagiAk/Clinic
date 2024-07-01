@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Medecin;
-use App\Models\Specialite;
+use App\Models\Specialites;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -39,18 +39,18 @@ class DatabaseSeeder extends Seeder
             "role"=> "medecin",
                 
         ]);
-        Specialite::create([
+        Specialites::create([
             "nom"=> "Cardio",      
         ]);
-        Specialite::create([
+        Specialites::create([
             "nom"=> "Neurologist",      
         ]);
         Medecin::create([
-            "specialite_id"=> "1",      
+            "specialites_id"=> "1",      
             "user_id"=> "2",      
         ]);
         Medecin::create([
-            "specialite_id"=> "2",      
+            "specialites_id"=> "2",      
             "user_id"=> "3",      
         ]);
 

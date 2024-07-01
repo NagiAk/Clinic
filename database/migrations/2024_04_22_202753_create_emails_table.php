@@ -13,6 +13,7 @@ class CreateEmailsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
             $table->string('sender');

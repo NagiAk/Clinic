@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('email_sents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('email_id')->constrained('emails');
