@@ -24,11 +24,11 @@ class Medecin extends Model
      */
     public function specialite()
     {
-        return $this->belongsTo(Specialite::class);
+        return $this->belongsTo(Specialites::class);
     }
     public function rdvs()
     {
-        return $this->hasMany(Rdv::class, 'medecin_id');
+        return $this->hasMany(Rdvs::class, 'medecin_id');
     }
     public function schedules()
     {

@@ -10,6 +10,6 @@ class Patient extends Model
     use HasFactory;
     public function rdvs()
     {
-        return $this->hasMany(Rdv::class, 'patient_id');
+        return $this->hasMany(Rdvs::class, 'patient_id');
     }
 }
