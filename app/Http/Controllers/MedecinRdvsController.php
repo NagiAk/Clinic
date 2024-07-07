@@ -161,7 +161,7 @@ class MedecinRdvsController extends Controller
             return redirect()->route('medecin.rdvs.index')->with('error', 'Appointment not found.');
         }
 
-        $logoPath = public_path('logo2.jpg');
+        $logoPath = public_path('akira_logo.png');
         // $logoData = base64_encode(file_get_contents($logoPath));
         // $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
         // $logoBase64 = 'data:image/' . $logoType . ';base64,' . $logoData;
