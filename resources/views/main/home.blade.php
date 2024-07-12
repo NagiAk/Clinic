@@ -1,5 +1,7 @@
 @extends('layout')
 
+@section('title', 'Clinic Al Adarissa')
+
 @section('content')
 <style>
 
