@@ -34,7 +34,7 @@ class RdvController extends Controller
     
         if ($specialiteFilter) {
             $query->whereHas('medecin', function($q) use ($specialiteFilter) {
-                $q->where('specialite_id', $specialiteFilter);
+                $q->where('specialites_id', $specialiteFilter);
             });
         }
     

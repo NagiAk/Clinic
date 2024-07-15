@@ -112,7 +112,7 @@
             const specialiteId = specialiteSelect.value;
             medecinSelect.innerHTML = '<option value="">All</option>';
     
-            const filteredMedecins = allMedecins.filter(med => med.specialite_id == specialiteId);
+            const filteredMedecins = allMedecins.filter(med => med.specialites_id == specialiteId);
             filteredMedecins.forEach(med => {
                 const option = document.createElement('option');
                 option.value = med.id;
@@ -141,7 +141,7 @@
             const specialiteId = modalSpecialiteSelect.value;
             modalMedecinSelect.innerHTML = '<option value="">Select Medecin</option>';
     
-            const filteredMedecins = allMedecins.filter(med => med.specialite_id == specialiteId);
+            const filteredMedecins = allMedecins.filter(med => med.specialites_id == specialiteId);
             filteredMedecins.forEach(med => {
                 const option = document.createElement('option');
                 option.value = med.id;
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const specialiteId = this.value;
         medecinSelect.innerHTML = '<option value="">Select Medecin</option>'; 
 
-        medecins.filter(med => med.specialite_id == specialiteId).forEach(med => {
+        medecins.filter(med => med.specialites_id == specialiteId).forEach(med => {
             const option = document.createElement('option');
             option.value = med.id;
             option.textContent = med.user.name;
