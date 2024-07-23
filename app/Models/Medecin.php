@@ -9,7 +9,7 @@ class Medecin extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'specialite_id'];
+    protected $fillable = ['user_id', 'specialites_id'];
 
     /**
      * Get the user associated with the medecin.
@@ -24,7 +24,7 @@ class Medecin extends Model
      */
     public function specialite()
     {
-        return $this->belongsTo(Specialites::class);
+        return $this->belongsTo(Specialites::class,'specialites_id');
     }
     public function rdvs()
     {
