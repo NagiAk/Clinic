@@ -34,11 +34,13 @@
             display: block;
             transition: background 0.3s;
         }
-        .sidebar a:hover {
-            background-color: #6494c4;
+        .sidebar a img {
+            max-height: 85px;
+            width: auto;
+            padding-left: 50px
         }
-        .sidebar .nav-link.active {
-            background-color: #0977ec;
+        .sidebar a:hover {
+            background-color: #687b8f;
         }
         .sidebar .dropdown-menu {
             background-color: #343a40;
@@ -47,6 +49,24 @@
         .sidebar .dropdown-menu a {
             color: #fff;
         }
+        .sidebar .nav-link.active {
+            position: relative;
+            color: #000;
+            padding-left: 20px; 
+        }
+
+        .sidebar .nav-link.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10px;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff; 
+            border-radius: 25px 0 0 25px; 
+            z-index: -1; 
+        }
+        
         .main-content {
             flex-grow: 1;
             margin-left: 250px;
@@ -170,12 +190,16 @@
     </style>
 </head>
 <body>
+    
     <button class="toggle-sidebar-btn">
         <i class="fas fa-bars"></i>
     </button>
     <div class="overlay"></div>
     @auth
     <div class="sidebar">
+        <a href="{{ url('/admin/dashboard') }}">
+            <img src="{{ asset('logo2.jpg') }}" alt="Logo">
+        </a>
         @if(Auth::user()->role === 'admin')
             <a class="nav-link" href="{{ route('emails.index') }}">
                 <i class="fas fa-envelope"></i> Liste des Emails
@@ -238,6 +262,13 @@
             overlay.addEventListener('click', function() {
                 sidebar.classList.remove('open');
                 overlay.classList.remove('show');
+            });
+            const currentUrl = window.location.href;
+            const links = document.querySelectorAll('.sidebar .nav-link');
+            links.forEach(link => {
+                if (link.href === currentUrl) {
+                    link.classList.add('active');
+                }
             });
         });
     </script>
