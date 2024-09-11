@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2>Specialite: {{ $specialite->nom }}</h2>
+    <h2>{{ $specialite->nom }}</h2>
     
     @if($specialite->medecins->isEmpty())
         <p>No medecins found for this specialite.</p>

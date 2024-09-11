@@ -22,6 +22,10 @@
 
     .img-thumbnail {
         border: 4px solid #ddd;
+        border-radius: 50%;     
+        object-fit: cover;      
+        width: 150px;           
+        height: 150px; 
     }
 
     .btn-sm {
@@ -50,7 +54,7 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <img src="{{ asset('storage/' . $user->image) }}" alt="Current Image" class="img-fluid rounded-circle img-thumbnail" style="max-width: 150px;">
+                        <img src="{{ asset('storage/' . $user->image) }}" alt="Current Image" class="img-fluid rounded-circle img-thumbnail">
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-3 text-right">

@@ -3,27 +3,45 @@
 @section('content')
 <div class="container mt-5">
     <h2>Specialties</h2>
-    <a href="{{ route('specialites.create') }}" class="btn btn-outline-success mb-2">Add New</a>
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr class="text-center">
-                <th style="color:#8d4949;">ID</th>
-                <th style="color:#8d4949;">Name</th>
-                <th style="color:#8d4949;">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="table-info">
-            @foreach ($specialites as $specialite)
-            <tr class="text-center">
-                <td>{{ $specialite->id }}</td>
-                <td>{{ $specialite->nom }}</td>
-                <td>
-                    <a href="{{ route('specialites.show', $specialite->id) }}" class="btn btn-outline-primary">Show Medecins</a>
-                    <a href="{{ route('specialites.edit', $specialite->id) }}" class="btn btn-outline-primary">Edit</a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <a href="{{ route('specialites.create') }}" class="btn btn-outline-success mb-4">Add New</a>
+    <div class="row">
+        @foreach ($specialites as $specialite)
+            <div class="col-md-4 mb-5 sp">
+                <a href="{{ route('specialites.show', $specialite->id) }}" class="card-link">
+                    <div class="card border-custom">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color:#8d4949;">{{ $specialite->nom }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
 </div>
 @endsection
+
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-link:hover .card {
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .border-custom {
+        border: 2px solid #8d4949;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+        background-color: #928d8d !important; /* Force background color to black */
+
+    }
+    
+    .sp{
+        height: 100%;
+        width: 50px;
+    }
+</style>
