@@ -45,7 +45,7 @@ class MedecinController extends Controller
         // Create a new Medecin instance
         $medecin = new Medecin();
         $medecin->user_id = $user->id; // Associate the Medecin with the newly created User
-        $medecin->specialite_id = $request->specialite_id;
+        $medecin->specialites_id = $request->specialite_id;
         $medecin->save();
 
         return redirect()->route('medecins.create')->with('success', 'Medecin created successfully!');

@@ -92,7 +92,7 @@
                                 <input type="hidden" name="etat_de_rdv" value="realise">
                                 <button type="submit" class="btn btn-outline-success btn-sm">Realize</button>
                             </form>
-                            <a href="{{ route('rdvs.edit', $rdv->id ) }}" class="btn btn-outline-primary">Edit</a>
+                            <a href="{{ route('rdvs.edit', $rdv->id ) }}" class="btn btn-outline-primary btn-sm">Edit</a>
                             
                         @endif
                     </td>
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     medecinSelect.addEventListener('change', function () {
-        const medecinId = 1; // Replace with the actual medecin ID
+        const medecinId = 1; 
 
         // Function to fetch schedules and return the array of schedules
         async function fetchSchedules(medecinId) {
@@ -317,22 +317,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const schedules = await response.json();
-                return schedules; // Return the array of schedules
+                return schedules;
             } catch (error) {
                 console.error('Error fetching schedules:', error);
-                return []; // Return an empty array on error
+                return [];
             }
         }
 
         // Fetch schedules and handle the resolved result
         fetchSchedules(medecinId).then((schedules) => {
-            console.log(schedules); // Log the resolved array of schedules
+            console.log(schedules); 
 
             // Now you can use the 'schedules' array directly to initialize 'flatpickr'
             if (schedules.length > 0) {
-                initializeFlatpickr(schedules); // Initialize flatpickr with fetched schedules
+                initializeFlatpickr(schedules); 
             } else {
-                // Handle no schedules case here
                 console.log("No schedules found");
             }
         }).catch((error) => {
@@ -341,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         /**
          * Function to initialize flatpickr with fetched schedules
-         * @param {Array} schedules - Array of fetched schedules
+         * @param {Array} schedules 
          */
         function initializeFlatpickr(schedules) {
 
@@ -357,8 +356,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         /**
          * Function to handle schedule selection logic
-         * @param {Array} schedules - Array of fetched schedules
-         * @param {string} dateStr - Selected date string
+         * @param {Array} schedules 
+         * @param {string} dateStr 
          */
         function handleScheduleSelection(schedules, dateStr) {
             const selectedSchedule = schedules.find(schedule => {
