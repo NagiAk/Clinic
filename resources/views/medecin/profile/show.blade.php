@@ -54,7 +54,7 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <img src="{{ asset('storage/' . $medecin->user->image) }}" alt="Current Image" class="img-fluid rounded-circle img-thumbnail" style="max-width: 150px;">
+                        <img src="{{$medecin->user->image ? asset('storage/' . $medecin->user->image) : asset('profile1.jpg')}}" alt="Current Image" class="img-fluid rounded-circle img-thumbnail" style="max-width: 140px;">
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-3 text-right">

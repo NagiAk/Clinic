@@ -16,14 +16,19 @@
 <div class="container mt-5">
     <h2>Schedule</h2>
     
-    <form method="Post" action="{{ route('medecin.schedule.index') }}" class="mb-4">
+    <form method="POST" action="{{ route('medecin.schedule.index') }}" class="mb-4" id="dateFilterForm">
         @csrf
         @method('get')
         <div class="input-group">
-            <input type="date" name="date_filter" class="form-control" value="{{ $dateFilter }}">
-            <button type="submit" class="btn btn-secondary">Filter by Date</button>
+            <input type="date" name="date_filter" class="form-control" value="{{ $dateFilter }}" id="dateFilterInput">
         </div>
     </form>
+    
+    <script>
+        document.getElementById('dateFilterInput').addEventListener('input', function() {
+            document.getElementById('dateFilterForm').submit();
+        });
+    </script>
     
     <div class="row">
         @foreach($schedules as $schedule)

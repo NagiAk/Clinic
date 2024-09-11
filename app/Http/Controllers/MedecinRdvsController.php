@@ -41,7 +41,13 @@ class MedecinRdvsController extends Controller
 
     public function create()
     {
-        $patients = Patient::all();
+        $medecinId = Auth::user()->medecin->id; 
+
+
+        $query = Patient::whereHas('rdvs', function($query) use ($medecinId) {
+            $query->where('medecin_id', $medecinId);
+        });
+        $patients = $query->get();
         $medecinId = Auth::user()->medecin->id;
         $schedules = Schedule::where('medecin_id', $medecinId)
                             ->where('status', 'available')

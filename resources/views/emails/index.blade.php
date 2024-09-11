@@ -23,7 +23,7 @@
                 @method('get')
                 <div class="form-group col-md-3">
                     <label>&nbsp;</label>
-                    <button type="submit" class="btn btn-primary btn-block">Refresh</button>
+                    <button type="submit" class="btn btn-primary btn-block ">Refresh</button>
                 </div>
             </form>
         </div>

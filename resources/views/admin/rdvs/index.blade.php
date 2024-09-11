@@ -46,13 +46,13 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group "style='width:100px'>
                 <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
         </div>
     </form>
 
-    <button type="button" class="btn btn-outline-success mb-2" data-toggle="modal" data-target="#createRdvModal">Add New</button>
+    <button type="button" style='width:100px' class="btn btn-outline-success mb-2" data-toggle="modal" data-target="#createRdvModal">Add New</button>
     
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
