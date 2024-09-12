@@ -371,7 +371,7 @@
                 const medecinId = this.dataset.medecin;
                 const scheduleDateTime = this.dataset.schedule; 
     
-                document.getElementById('editRdvForm').action = `/admin/rdvs/update/${id}`;
+                document.getElementById('editRdvForm').action = `/admin/rdvs/${id}`;
     
                 document.getElementById('edit_patient_id').value = patientId;
                 specialiteSelect.value = specialiteId;
