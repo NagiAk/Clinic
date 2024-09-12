@@ -44,9 +44,8 @@
 
         <div class="form-group">
             <label for="medecin_id">Medecin</label>
-            <select class="form-control" id="medecin_id" name="medecin_id" required>
+            <select name="medecin_id" id="medecin_id" class="form-control" required>
                 <option value="">Select Medecin</option>
-                <!-- Medecins will be populated via AJAX -->
             </select>
             @error('medecin_id')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -76,9 +75,6 @@
         const specialiteSelect = document.getElementById('specialite_id');
         const medecinSelect = document.getElementById('medecin_id');
         const scheduleSelect = document.getElementById('schedule_id');
-        const editSpecialiteSelect = document.getElementById('edit_specialite_id');
-        const editMedecinSelect = document.getElementById('edit_medecin_id');
-        const editScheduleSelect = document.getElementById('edit_schedule_id');
         const noScheduleFoundDiv = document.getElementById('no-schedule-found');
         const medecins = @json($specialites->flatMap->medecins);
     

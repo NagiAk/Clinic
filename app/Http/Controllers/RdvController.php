@@ -192,9 +192,10 @@ class RdvController extends Controller
                 'availableSlots' => $availableSlots
             ]);
         }
-        public function getMedecinsBySpeciality($specialityId)
+        public function getMedecinsBySpecialite($specialiteId)
         {
-            $medecins = Medecin::where('specialite_id', $specialityId)->with('user')->get();
+            // Assuming that 'Medecin' has a relationship with 'User'
+            $medecins = Medecin::where('specialites_id', $specialiteId)->with('user')->get();
             return response()->json($medecins);
         }
 
