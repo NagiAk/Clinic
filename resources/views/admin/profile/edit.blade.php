@@ -25,14 +25,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="im">Image:</label>
-                                @if($user->image)
-                                    <img src="{{ asset('storage/' . $user->image) }}" alt="Current Image" class="img-fluid img-thumbnail " style="max-width: 150px;">
+                                <label for="image">Profile Picture</label>
+                                <input type="file" class="form-control-file" id="image" name="image">
+                                @if(Auth::user()->image)
+                                    <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Current Profile Picture" style="max-width: 200px; margin-top: 10px;">
+                                @else
+                                    <p>No image uploaded.</p>
                                 @endif
-                                <input type="file" class="form-control" id="image" name="image">
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <button type="submit" class="btn btn-outline-primary"><i class="fa-regular fa-circle-check"></i> Update</button>
                             <a href="{{ route('profile.show') }}" class="btn btn-outline-secondary">Return</a>
                         </form>
                     </div>

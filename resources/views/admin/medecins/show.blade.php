@@ -49,13 +49,13 @@
             @endif
         </div>
         <div class="card-footer">
-            <a href="{{ route('medecins.edit', $medecin->id) }}" class="btn btn-outline-info">Edit</a>
+            <a href="{{ route('medecins.edit', $medecin->id) }}" class="btn btn-outline-info"><i class="fa-solid fa-pen-to-square"></i></a>
             <form action="{{ route('medecins.destroy', $medecin->id) }}" method="POST" style="display:inline-block;">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this medecin?')">Delete</button>
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this medecin?')"><i class="fa-solid fa-trash"></i></button>
             </form>
-            <a href="{{ route('specialites.show',$medecin->specialite->id) }}" class="btn btn-outline-secondary">Back</a>
+            <a href="{{ route('specialites.show',$medecin->specialite->id) }}" class="btn btn-outline-secondary"><i class="fa-solid fa-backward"></i></a>
         </div>
     </div>
 </div>

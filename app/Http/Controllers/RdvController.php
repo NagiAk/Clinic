@@ -42,7 +42,7 @@ class RdvController extends Controller
             $query->where('medecin_id', $medecinFilter);
         }
     
-        $rdvs = $query->get();
+        $rdvs = $query->paginate(8);
         $patients = Patient::all();
         $specialites = Specialites::with('medecins.user')->get();
     

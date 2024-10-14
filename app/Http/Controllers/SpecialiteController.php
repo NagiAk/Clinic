@@ -9,9 +9,11 @@ class SpecialiteController extends Controller
 {
     public function index()
     {
-        $specialites = Specialites::all();
+        $query = Specialites::query();
+        $specialites = $query->paginate(12);
         return view('admin.specialites.index', compact('specialites'));
     }
+
 
     public function create()
     {

@@ -22,7 +22,7 @@ class AuthController extends Controller
             return redirect()->intended(route('medecin.profile.show'));  
         }
         if(Auth::user()->role=="admin")
-        return redirect()->intended(route('dashboard'));  
+            return redirect()->intended(route('dashboard'));  
         }
 
         

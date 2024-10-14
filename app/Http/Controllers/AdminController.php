@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Medecin;
 use App\Models\Patient;
 use App\Models\Rdvs;
+use App\Models\Specialites;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -64,6 +65,8 @@ class AdminController extends Controller
         $encourCount = Rdvs::where('etat_de_rdv', 'encour')->count();
 
         $rdvStatus = [$realiserCount, $annulerCount, $encourCount];
-        return view('admin.dashboard', compact('patientsCount', 'rdvsCount', 'medecinsCount', 'rdvStatus'));
+
+        $specialites = Specialites::all();
+        return view('admin.dashboard', compact('patientsCount', 'rdvsCount', 'medecinsCount', 'rdvStatus', 'specialites'));
     }
 }

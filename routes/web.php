@@ -73,8 +73,8 @@ Route::middleware(['web', 'auth', CheckUserRole::class .':admin'])->group(functi
 
 
 
-    Route::resource('admin/medecins', MedecinController::class);
-    Route::get('admin/medecins', [MedecinController::class, 'getMedecinsBySpecialite']);
+    Route::resource('/admin/medecins', MedecinController::class);
+    Route::get('/admin/medecins', [MedecinController::class, 'getMedecinsBySpecialite']);
 
     Route::post('admin/rdvs/{id}', [RdvController::class, 'updateEtat'])->name('rdvs.updateEtat');
 

@@ -3,11 +3,22 @@
 @section('content')
 <div class="container mt-5">
     <h2>Liste des Patients</h2>
-    <a href="{{ route('patients.create') }}" class="btn btnt btn-primary mb-2">Add New Patient</a>
+    {{-- <a href="{{ route('patients.create') }}" class="btn btnt btn-primary mb-2">Add New Patient</a> --}}
+    <button type="button" class="addbtn custom-btn mb-2" data-toggle="modal" data-target="#createPatientModal">Add New</button>
     <div class="row">
         @foreach ($patients as $patient)
             <div class="col-md-4 mb-5 sp">
-                <a href="{{ route('patients.edit', $patient->id) }}" class="card-link">
+                <button type="button" class="card-link edit-btn" 
+                    data-toggle="modal" data-target="#editPatientModal"
+                    data-id="{{ $patient->id }}" 
+                    data-nom="{{ $patient->nom }}"
+                    data-prenom="{{ $patient->prenom }}"
+                    data-gender="{{ $patient->gender }}"
+                    data-email="{{ $patient->email }}"
+                    data-phone="{{ $patient->phone }}"
+                    data-address="{{ $patient->address }}"
+                    data-cin="{{ $patient->cin }}"
+                    >
                     <div class="card border-custom">
                         <div class="card-body">
                             <h5 class="card-title mb" style="color:#8d4949; ">
@@ -21,38 +32,20 @@
                             </p>
                         </div>
                     </div>
-                </a>
+                </button>
             </div>
         @endforeach
+    </div>
+    <div class="d-flex justify-content-center">
+        {{ $patients->links() }}
     </div>
 </div>
 @endsection
 
-<style>
-    .card-link {
-        text-decoration: none;
-        color: inherit;
-    }
+@include('admin.patients.style.style')
 
-    .card-link:hover .card {
-        transform: scale(1.02);
-        transition: transform 0.2s ease-in-out;
-    }
+{{-- Add Modal --}}
+@include('admin.patients.modals.addModal')
 
-    .border-custom {
-        border: 2px solid #8d4949;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease-in-out;
-        background-color: #928d8d !important; /* Background color set to #928d8d */
-    }
-
-    .mb{
-        margin-bottom: 16px !important;
-    }
-
-    .sp {
-        height: 100%;
-        width: 50px;
-    }
-</style>
+{{-- Edit Modal --}}
+@include('admin.patients.modals.editModal')

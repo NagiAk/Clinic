@@ -48,7 +48,10 @@ class MedecinController extends Controller
         $medecin->specialites_id = $request->specialite_id;
         $medecin->save();
 
-        return redirect()->route('medecins.create')->with('success', 'Medecin created successfully!');
+        return response()->json([
+            'redirectUrl' => route('specialites.show', ['specialite' => $request->specialite_id]),
+        ]);
+        // return redirect()->route('specialites.show', ['specialite' => $request->specialite_id])->with('success', 'Medecin created successfully!');
     }
     public function show($id)
     {
@@ -67,25 +70,22 @@ class MedecinController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'email' => 'required|email',
             'password' => 'nullable|string|min:8|confirmed',
-            'specialite_id' => 'required|exists:specialites,id',
+            'specialite_id' => 'required|exists:specialites,id', // Ensure specialite_id is validated if needed
         ]);
 
         $medecin = Medecin::findOrFail($id);
         $user = User::findOrFail($medecin->user_id);
-        
+
         $user->name = $request->name;
         $user->email = $request->email;
-        if ($request->password) {
+        if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
         $user->save();
 
-        $medecin->specialite_id = $request->specialite_id;
-        $medecin->save();
-
-        return redirect()->route('medecins.index')->with('success', 'Medecin updated successfully!');
+        return response()->json(['message' => 'Medecin updated successfully.']);
     }
 
     public function destroy($id)

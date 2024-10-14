@@ -25,7 +25,7 @@
         border-radius: 50%;     
         object-fit: cover;      
         width: 150px;           
-        height: 150px; 
+        height: 130px; 
     }
 
     .btn-sm {

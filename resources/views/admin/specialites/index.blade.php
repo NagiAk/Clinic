@@ -3,7 +3,8 @@
 @section('content')
 <div class="container mt-5">
     <h2>Specialties</h2>
-    <a href="{{ route('specialites.create') }}" class="btn btn-outline-success mb-4">Add New</a>
+    {{-- <a href="{{ route('specialites.create') }}" class="btn btn-outline-success mb-4">Add New</a> --}}
+    <button type="button" class="addbtn custom-btn mb-2" data-toggle="modal" data-target="#createSpecialiteModal">Add New</button>
     <div class="row">
         @foreach ($specialites as $specialite)
             <div class="col-md-4 mb-5 sp">
@@ -17,31 +18,15 @@
             </div>
         @endforeach
     </div>
+    <div class="d-flex justify-content-center">
+        {{ $specialites->links() }}
+    </div>
 </div>
 @endsection
 
-<style>
-    .card-link {
-        text-decoration: none;
-        color: inherit;
-    }
 
-    .card-link:hover .card {
-        transform: scale(1.02);
-        transition: transform 0.2s ease-in-out;
-    }
+@include('admin.specialites.style.style')
 
-    .border-custom {
-        border: 2px solid #8d4949;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease-in-out;
-        background-color: #928d8d !important; /* Force background color to black */
+{{-- Add Modal Specialite--}}
+@include('admin.specialites.modals.addModal')
 
-    }
-    
-    .sp{
-        height: 100%;
-        width: 50px;
-    }
-</style>

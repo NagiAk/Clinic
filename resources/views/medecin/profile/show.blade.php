@@ -21,6 +21,10 @@
 
     .img-thumbnail {
         border: 4px solid #ddd;
+        border-radius: 50%;     
+        object-fit: cover;      
+        width: 150px;           
+        height: 130px; 
     }
 
     .btn-sm {
