@@ -49,11 +49,11 @@
                                     preg_match_all('/\[(.*?)\]/', $email['body'], $matches);
                                     $info = implode(', ', $matches[1]); 
                                     $infoArray = explode(', ', $info);
-                                    $namePattern = '/^[A-Za-zÀ-ÖØ-öø-ÿ\-\' ]+$/u'; // Matches letters, spaces, and certain special characters in names
-                                    $emailPattern = '/^\S+@\S+\.\S+$/'; // Matches a valid email address
+                                    $namePattern = '/^[A-Za-zÀ-ÖØ-öø-ÿ\-\' ]+$/u'; 
+                                    $emailPattern = '/^\S+@\S+\.\S+$/'; 
                                     $cinPattern = '/^[A-Za-z](?=.{7}$)\d{7}|[A-Za-z]{2}(?=.{6}$)\d{6}$/';
-                                    $datePattern = '/^\d{4}-\d{2}-\d{2}$/'; // Matches a date in YYYY-MM-DD format
-                                    $phonePattern = '/^\d{10}$/'; // Matches a 10-digit phone number
+                                    $datePattern = '/^\d{4}-\d{2}-\d{2}$/'; 
+                                    $phonePattern = '/^\d{10}$/'; 
                                     if (count($infoArray) == 6 &&
                                     preg_match($namePattern, $infoArray[0]) &&
                                     preg_match($emailPattern, $infoArray[4]) &&

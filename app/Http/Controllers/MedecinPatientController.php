@@ -34,7 +34,20 @@ class MedecinPatientController extends Controller
 
     public function show($id)
     {
-        $patient = Patient::find($id);
+        $medecinId = Auth::user()->medecin->id; 
+        $query = Patient::whereHas('rdvs', function($query) use ($medecinId) {
+            $query->where('medecin_id', $medecinId);
+        });
+        $patient = $query->where(
+            'id', $id
+        )->first();
+        //condition error
+        if (!$patient) {
+            return view('errors.error')
+            ->with('error', 'Patient not found');
+        }
+
+
         return view('medecin.patients.show', compact('patient'));
     }
 
@@ -43,13 +56,13 @@ class MedecinPatientController extends Controller
         $patient = Patient::find($id);
 
         if (!$patient) {
-            return redirect()->route('patients.index')->with('error', 'Patient not found.');
+            return view('errors.error')->with('error', 'Patient not found.');
         }
 
         // Ensure the patient has an RDV with the authenticated medecin
         $medecinId = Auth::user()->medecin->id;
         if (!$patient->rdvs()->where('medecin_id', $medecinId)->exists()) {
-            return redirect()->route('patients.index')->with('error', 'Unauthorized access to edit patient details.');
+            return view('errors.error')->with('error', 'Unauthorized access to edit patient details.');
         }
 
         return view('medecin.patients.edit', compact('patient'));
@@ -69,7 +82,7 @@ class MedecinPatientController extends Controller
 
         $medecinId = Auth::user()->medecin->id;
         if (!$patient->rdvs()->where('medecin_id', $medecinId)->exists()) {
-            return redirect()->route('patients.index')->with('error', 'Unauthorized access to update patient details.');
+            return view('errors.error')->with('error', 'Unauthorized access to update patient details.');
         }
 
         $patient->nom = $request->nom;
@@ -88,7 +101,7 @@ class MedecinPatientController extends Controller
 
         $medecinId = Auth::user()->medecin->id;
         if (!$patient->rdvs()->where('medecin_id', $medecinId)->exists()) {
-            return redirect()->route('patients.index')->with('error', 'Unauthorized access to delete patient details.');
+            return view('errors.error')->with('error', 'Unauthorized access to delete patient details.');
         }
 
         $patient->delete();

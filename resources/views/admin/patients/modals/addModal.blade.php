@@ -42,9 +42,9 @@
                         <label for="cin">CIN</label>
                         <input type="text" class="form-control" id="cin" name="cin" required>
                     </div>
-                    <button type="submit" class="btn btn-success">Add</button>
+                    <button type="submit" class="btn btn-success custom-button">Add</button>
                 </form>
             </div>
         </div>
     </div>
-</div>
+</div>  

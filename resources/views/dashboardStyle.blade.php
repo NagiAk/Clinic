@@ -105,15 +105,25 @@
         padding: 20px;
         overflow-y: auto;
     }
-    .dropdown-menu {
-        background-color: rgb(68, 107, 226);
+    .dropdown{
+        width: 160px;
     }
+    .dropdown-menu {
+        background-color: rgb(139, 157, 212);
+        box-shadow: 0 4px 8px rgba(42, 31, 144, 0.601);
+        height: 85px;
+    }
+    
     .dropdown-item {
-        color: #092ed1;
+        color: #11278bd2;
+        margin-left: 20px;
+        width: 100px
     }
     .dropdown-item:hover {
-        background-color: #08295e88;
-        color: #092ed1;
+        background-color: rgb(122, 130, 152);
+        color: #11278bd2;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(20, 16, 53, 0.601);
     }
     .toggle-sidebar-btn {
         display: none;
@@ -137,6 +147,31 @@
         background: rgba(0, 0, 0, 0.5);
         z-index: 500;
     }
+
+
+    /* modals style */
+    .add-modal{
+        background-color: rgba(34, 230, 34, 0.575);
+        border: 2px solid rgba(65, 81, 65, 0.575);
+        color: white;
+    }
+
+    .add-modal:hover{
+        background-color: rgba(35, 147, 207, 0.575);
+        color: white;
+        border: 2px solid rgba(28, 9, 87, 0.575);
+    }
+
+    .modal-add-content{
+        background-color: rgb(234, 244, 241);
+        border: 2px solid rgba(15, 2, 42, 0.575);
+    }
+
+    .blr{
+        backdrop-filter: blur(5px);
+    }
+
+
     @media (max-width: 768px) {
         .sidebar {
             transform: translateX(-100%);

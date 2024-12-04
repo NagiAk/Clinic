@@ -1,6 +1,6 @@
-<div class="modal fade" id="createMedecinModal" tabindex="-1" aria-labelledby="createMedecinLabel" aria-hidden="true">
+<div class="modal fade blr" id="createMedecinModal" tabindex="-1" aria-labelledby="createMedecinLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content modal-style-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createMedecinLabel">Create Medecin</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -74,12 +74,12 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="form-group row mb-0">
+                    <div class="form-group row mb-2">
                         <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-style-modal custom-button">Create</button>
                         </div>
                     </div>
-                </form>
+                </form> 
             </div>
         </div>
     </div>

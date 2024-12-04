@@ -72,7 +72,7 @@ class MedecinController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'password' => 'nullable|string|min:8|confirmed',
-            'specialite_id' => 'required|exists:specialites,id', // Ensure specialite_id is validated if needed
+            'specialite_id' => 'required|exists:specialites,id',
         ]);
 
         $medecin = Medecin::findOrFail($id);
@@ -83,6 +83,8 @@ class MedecinController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
+        $medecin->specialite_id = $request->specialite_id;
+        $medecin->save();
         $user->save();
 
         return response()->json(['message' => 'Medecin updated successfully.']);

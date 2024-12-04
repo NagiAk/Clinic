@@ -60,3 +60,6 @@
     </div>
 </div>
 @endsection
+
+{{-- style --}}
+@include('admin.medecins.styles.style')

@@ -34,7 +34,8 @@ class SpecialiteController extends Controller
     public function show($id)
     {
         $specialite = Specialites::findOrFail($id);
-        return view('admin.specialites.show', compact('specialite'));
+        $specialites = Specialites::all();
+        return view('admin.specialites.show', compact('specialite','specialites'));
     }
 
     public function edit(Specialites $specialite)

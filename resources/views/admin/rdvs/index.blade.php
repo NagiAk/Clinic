@@ -6,7 +6,15 @@
 <div class="container mt-5">
     <h2>Appointments</h2>
     
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ol>
+                @foreach ($errors->all() as $error)
+                    <li type="N">{{ $error }}</li>
+                @endforeach
+            </ol>
+        </div>
+    @endif
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -58,7 +66,9 @@
     
     <button type="button" class="btn addbtn custom-btn mb-2" data-toggle="modal" data-target="#createRdvModal">Add New</button>
     
-    
+    @empty($rdvs)
+        <div>Empty</div>                
+    @endempty
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -74,41 +84,41 @@
             </thead>        
             <tbody class="table-info">
                 @foreach ($rdvs as $rdv)
-                <tr class="text-center">
-                    <td>{{ $rdv->id }}</td>
-                    <td>{{ $rdv->patient->nom }} {{ $rdv->patient->prenom }}</td>
-                    <td>Dr. {{ $rdv->medecin->user->name }}</td>
-                    <td>{{ $rdv->schedule->date }}</td>
-                    <td>{{ $rdv->schedule->time }}</td>
-                    <td>
-                        <div class="p-0 rounded {{ $rdv->etat_de_rdv === 'realise' ? 'bg-success text-white' : ($rdv->etat_de_rdv === 'annuler' ? 'bg-danger text-white' : '') }}">
-                            {{ $rdv->etat_de_rdv }}
-                        </div>
-                    </td>
-                    <td class="d-flex justify-content-center align-items-center">
-                        @if ($rdv->etat_de_rdv === 'encour')
-                            <form action="{{ route('rdvs.updateEtat', $rdv->id) }}" method="POST" class="button-form">
-                                @csrf
-                                <input type="hidden" name="etat_de_rdv" value="annuler">
-                                <button type="submit" class="btn btn-outline-danger btn-sm custom-button"><i class="fa-solid fa-x"></i></button>
-                            </form>
-                            <form action="{{ route('rdvs.updateEtat', $rdv->id) }}" method="POST" class="button-form">
-                                @csrf
-                                <input type="hidden" name="etat_de_rdv" value="realise">
-                                <button type="submit" class="btn btn-outline-success btn-sm custom-button"><i class="fa-solid fa-check"></i></button>
-                            </form>
-                            {{-- <a href="{{ route('rdvs.edit', $rdv->id ) }}" class="btn btn-outline-primary btn-sm custom-button">Edit</a> --}}
-                            <button class="btn btn-outline-primary btn-sm custom-button edit-btn" data-toggle="modal" data-target="#editRdvModal" 
-                                    data-id="{{ $rdv->id }}" 
-                                    data-patient="{{ $rdv->patient_id }}" 
-                                    data-specialite="{{ $rdv->specialite_id }}" 
-                                    data-medecin="{{ $rdv->medecin_id }}" 
-                                    data-schedule="{{ $rdv->schedule->date }} {{ $rdv->schedule->time }}">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                        @endif
-                    </td>                  
-                </tr>
+                    <tr class="text-center">
+                        <td>{{ $rdv->id }}</td>
+                        <td>{{ $rdv->patient->nom }} {{ $rdv->patient->prenom }}</td>
+                        <td>Dr. {{ $rdv->medecin->user->name }}</td>
+                        <td>{{ $rdv->schedule->date }}</td>
+                        <td>{{ $rdv->schedule->time }}</td>
+                        <td>
+                            <div class="p-0 rounded {{ $rdv->etat_de_rdv === 'realise' ? 'bg-success text-white' : ($rdv->etat_de_rdv === 'annuler' ? 'bg-danger text-white' : 'bg-orange text-white') }}">
+                                {{ $rdv->etat_de_rdv }}
+                            </div>
+                        </td>
+                        <td class="d-flex justify-content-center align-items-center">
+                            @if ($rdv->etat_de_rdv === 'encour')
+                                <form action="{{ route('rdvs.updateEtat', $rdv->id) }}" method="POST" class="button-form">
+                                    @csrf
+                                    <input type="hidden" name="etat_de_rdv" value="annuler">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm custom-button"><i class="fa-solid fa-x"></i></button>
+                                </form>
+                                <form action="{{ route('rdvs.updateEtat', $rdv->id) }}" method="POST" class="button-form">
+                                    @csrf
+                                    <input type="hidden" name="etat_de_rdv" value="realise">
+                                    <button type="submit" class="btn btn-outline-success btn-sm custom-button"><i class="fa-solid fa-check"></i></button>
+                                </form>
+                                {{-- <a href="{{ route('rdvs.edit', $rdv->id ) }}" class="btn btn-outline-primary btn-sm custom-button">Edit</a> --}}
+                                <button class="btn btn-outline-primary btn-sm custom-button edit-btn" data-toggle="modal" data-target="#editRdvModal" 
+                                        data-id="{{ $rdv->id }}" 
+                                        data-patient="{{ $rdv->patient_id }}" 
+                                        data-specialite="{{ $rdv->medecin->specialite->id }}" 
+                                        data-medecin="{{ $rdv->medecin_id }}" 
+                                        data-schedule="{{ $rdv->schedule->date }} {{ $rdv->schedule->time }}">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            @endif
+                        </td>                  
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -125,7 +135,13 @@
 
 
 {{-- Edit Modal --}}
-@include('admin.rdvs.modals.editModal')
+@if($rdvs->count()>0)
+     @include('admin.rdvs.modals.editModal')
+@endif()
+   
+    
+
+
 
 
 @endsection

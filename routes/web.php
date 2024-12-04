@@ -60,7 +60,7 @@ Route::middleware(['web', 'auth', CheckUserRole::class .':admin'])->group(functi
     Route::get('admin/emails/filtered', [GmailAuthController::class, 'DateFilter'])->name('emails.filter');
     Route::get('admin/search-patients', [RdvController::class, 'searchPatients'])->name('search-patients');
 
-    Route::get('/auth/callback', [GmailAuthController::class, 'authenticate'])->name('auth.callback');
+    Route::get('/auth/callback', [GmailAuthController::class, 'authenticate'])->name('auth.callback');  
     Route::post('/validation/process',[ValidationController::class,'processValidation'])->name('validation.process');
 
     Route::resource('admin/patients', PatientController::class);

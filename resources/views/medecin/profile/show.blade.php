@@ -8,6 +8,9 @@
         background: linear-gradient(110deg, #8ebbe2 50%, #edf8ef 50%);
 
     }
+    .card{
+        margin-top: 13px;
+    }
     .card-header {
         font-size: 1.5rem;
         font-weight: 700;
@@ -61,7 +64,7 @@
                         <img src="{{$medecin->user->image ? asset('storage/' . $medecin->user->image) : asset('profile1.jpg')}}" alt="Current Image" class="img-fluid rounded-circle img-thumbnail" style="max-width: 140px;">
                     </div>
                     <div class="row mb-3">
-                        <div class="col-sm-3 text-right">
+                        <div class="col-sm-3 ">
                             <strong>Name:</strong>
                         </div>
                         <div class="col-sm-9">
@@ -69,7 +72,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-sm-3 text-right">
+                        <div class="col-sm-3">
                             <strong>Email:</strong>
                         </div>
                         <div class="col-sm-9">

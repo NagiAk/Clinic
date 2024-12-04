@@ -52,5 +52,26 @@
         color: white;
         border: 2px solid rgba(0, 128, 0, 0.575);
     }
+
+    .btn-style-modal{
+        background-color: rgba(34, 230, 34, 0.575);
+        border: 2px solid rgba(65, 81, 65, 0.575);
+        color: white;
+    }
+
+    .btn-style-modal:hover{
+        background-color: rgba(35, 147, 207, 0.575);
+        color: white;
+        border: 2px solid rgba(28, 9, 87, 0.575);
+    }
+
+    .modal-style-content{
+        background-color: rgb(234, 244, 241);
+        border: 2px solid rgba(15, 2, 42, 0.575);
+    }
+
+    .blr{
+        backdrop-filter: blur(5px);
+    }
     
 </style>

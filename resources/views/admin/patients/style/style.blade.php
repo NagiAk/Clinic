@@ -1,5 +1,5 @@
 <style>
-    .row {
+.row {
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
@@ -58,4 +58,8 @@
     flex: 1 1 30%; 
 }
 
+.vide{
+    color: #8d4949;
+    font-size: 80;
+}
 </style>

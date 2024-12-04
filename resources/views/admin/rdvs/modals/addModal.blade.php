@@ -1,6 +1,6 @@
-<div class="modal fade" id="createRdvModal" tabindex="-1" role="dialog" aria-labelledby="createRdvModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div class="modal fade blr" id="createRdvModal" tabindex="-1" role="dialog" aria-labelledby="createRdvModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modal-style-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createRdvModalLabel">Nouveau Rdv</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group">
                         <label for="schedule_id">Available Date and Time</label>
-                        <input type="text" id="datetime" class="form-control @error('schedule_id') is-invalid @enderror" required>
+                        <input type="text" id="datetime" name="schedule_id" class="form-control @error('schedule_id') is-invalid @enderror" required>
                         <input type="hidden" name="schedule_id" id="schedule_id" required>
                         @error('schedule_id')
                             <div class="invalid-feedback">
@@ -54,7 +54,7 @@
                         @enderror
                         <div id="no-schedule-found" class="" ></div>
                     </div>
-                    <button type="submit" class="btn btn-success">Add</button>
+                    <button type="submit" class="btn btn-style-modal custom-button ">Add</button>
                 </form>
             </div>
         </div>
@@ -100,7 +100,6 @@
             }
 
             fetchSchedules(medecinId).then((schedules) => {
-                console.log(schedules); 
 
                 if (schedules.length > 0) {
                     initializeFlatpickr(schedules); 
@@ -136,7 +135,6 @@
                     const formattedDateTime = `${schedule.date} ${schedule.time.substr(0, 5)}`;
                     return formattedDateTime === dateStr;
                 });
-                console.log(selectedSchedule);
                 if (selectedSchedule) {
                     document.getElementById('schedule_id').value = selectedSchedule.id;
                     noScheduleFoundDiv.innerHTML = 'Date and Time are valid.';

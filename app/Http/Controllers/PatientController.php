@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PatientController extends Controller
 {
@@ -21,15 +22,18 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validated = Validator::make($request->all(),[
             'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'phone' => 'nullable|numeric',
+            'prenom' => 'required|string|max:255',  
+            'phone' => 'nullable|numeric|max_digits:10|min_digits:10',
             'email' => 'required|string|email|max:255|unique:patients',
             'gender' => 'nullable|in:male,female',
             'address' => 'nullable|string|max:255',
             'cin' => 'required|string|max:255'
         ]);
+        if ($validated->fails()) {
+            return redirect()->back()->withErrors($validated)->withInput();
+        }
         $ptn = new Patient();
         $ptn->nom=$request->input('nom');
         $ptn->prenom=$request->input('prenom');

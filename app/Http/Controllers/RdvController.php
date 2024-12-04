@@ -19,7 +19,7 @@ class RdvController extends Controller
         $statusFilter = $request->input('etat_de_rdv');
         $specialiteFilter = $request->input('specialite_filter');
         $medecinFilter = $request->input('medecin_filter');
-    
+        
         $query = Rdvs::query();
     
         if ($dateFilter) {
@@ -71,6 +71,7 @@ class RdvController extends Controller
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|exists:patients,id',
             'schedule_id' => 'required|exists:schedules,id',
+
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +79,13 @@ class RdvController extends Controller
         }
 
         $schedule = Schedule::find($request->schedule_id);
+
+        if ($schedule->date < now()) {
+            if(now()->addDay()->format('D')==='Sun'){
+                return redirect()->back()->withErrors(['schedule_id' => 'The selected date must be after Sunday.']);
+            };
+            return redirect()->back()->withErrors(['schedule_id' => 'The selected date must start from tomorrow.']);
+        }
 
         if ($schedule->status !== 'available') {
             return redirect()->back()->with('error', 'The selected schedule is not available.');
@@ -132,6 +140,10 @@ class RdvController extends Controller
 
         $schedule = Schedule::findOrFail($validated['schedule_id']);
 
+        if ($schedule->date < now()) {
+            return redirect()->back()->withErrors(['schedule_id' => 'The selected date must start from tomorrow.']);
+        }
+
         if ($schedule->status != 'available') {
             return redirect()->back()->with('error', 'The selected schedule slot is no longer available.');
         }
@@ -174,7 +186,7 @@ class RdvController extends Controller
             return response()->json($patients);
         }
 
-        public function availableDatesTimes(Medecin $medecin, $date)
+    public function availableDatesTimes(Medecin $medecin, $date)
         {
             // Retrieve available schedules for the given doctor and date
             $availableSlots = $medecin->schedules()
@@ -192,14 +204,14 @@ class RdvController extends Controller
                 'availableSlots' => $availableSlots
             ]);
         }
-        public function getMedecinsBySpecialite($specialiteId)
+    public function getMedecinsBySpecialite($specialiteId)
         {
             // Assuming that 'Medecin' has a relationship with 'User'
             $medecins = Medecin::where('specialites_id', $specialiteId)->with('user')->get();
             return response()->json($medecins);
         }
 
-        public function getSchedulesByMedecin($medecinId)
+    public function getSchedulesByMedecin($medecinId)
         {
             $schedules = Schedule::where('medecin_id', $medecinId)
                                 ->where('status', 'available')

@@ -43,13 +43,12 @@
     <div class="main-content">
         <nav class="navbar nt">
             <h1><a class="na nav-link" href="{{url('admin/dashboard')}}">Dashboard</a></h1>
-            <div>
                 <div class="dropdown">
                     <a class="btn btn-outline-secondary dropdown-toggle prof" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i> {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item item" href="{{ route('profile.show') }}">Profile</a>
+                        <a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a>
                         {{-- <a class="dropdown-item item" href="{{ route('medecins.create') }}">Add Medecin</a> --}}
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -57,7 +56,6 @@
                             <button class="dropdown-item item" type="submit">Logout</button>
                         </form>
                     </div>
-                </div>
             </div>
         </nav>
         <div class="content">
